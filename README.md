@@ -1,1 +1,1 @@
-#mfm - minimalist finance manager 
+# *mfm* - minimalist finance manager 
