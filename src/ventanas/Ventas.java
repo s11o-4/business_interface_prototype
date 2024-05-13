@@ -23,7 +23,7 @@ public class Ventas extends javax.swing.JFrame {
     public Ventas() {
         initComponents();
         setLocationRelativeTo(null);
-        String user = Login.user;
+        String user = Login.email;
         setResizable(false);
         JLabel_Titulo.setText("Bienvenido " + user);
 

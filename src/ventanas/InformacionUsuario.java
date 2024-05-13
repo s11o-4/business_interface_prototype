@@ -21,18 +21,17 @@ public class InformacionUsuario extends javax.swing.JFrame {
     //siempre la clase
     int ID_USER = GestionarUsuarios.ID_USER;
 
-    int ID;
+    int ID = 1;
 
     public InformacionUsuario() {
-
         initComponents();
         setLocationRelativeTo(null);
-        user = Login.user;
+        user = Login.email;
         user_update = GestionarUsuarios.user_update;
 
         setSize(630, 450);
         setResizable(false);
-        setTitle("Informacion del usuario " + user_update);
+        setTitle("Informacion del usuario " + user);
 
         //Metodo para evitar que cuando cierres esta interfaz se termine de ejecutar
         //todo
@@ -40,7 +39,10 @@ public class InformacionUsuario extends javax.swing.JFrame {
 
         //Se crea un objeto de la clase icon ya que si tu quieres poner un objeto de la 
         //clase ImageIcon no te lo va a permitir
-        Icon fondo = new ImageIcon(wallpaper.getImage().getScaledInstance(JLabel_Wallpaper.getWidth(), JLabel_Wallpaper.getHeight(), Image.SCALE_DEFAULT));
+        Icon fondo = new ImageIcon(wallpaper.getImage().getScaledInstance(
+                JLabel_Wallpaper.getWidth(),
+                JLabel_Wallpaper.getHeight(),
+                Image.SCALE_DEFAULT));
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -54,7 +56,7 @@ public class InformacionUsuario extends javax.swing.JFrame {
         try {
 
             Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement("select * from usuarios where username = '" + user_update + "'");
+            PreparedStatement pst = cn.prepareStatement("select * from Users where username = '" + user_update + "'");
 
             ResultSet rs = pst.executeQuery();
 
@@ -72,7 +74,7 @@ public class InformacionUsuario extends javax.swing.JFrame {
             }
             cn.close();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "NO se encontro al usuario comuniquese con el administrador");
+            JOptionPane.showMessageDialog(null, "No se encontro al usuario comuniquese con el administrador");
             System.err.println("Error al mostrar los datos del empleado ");
 
         }
@@ -103,6 +105,7 @@ public class InformacionUsuario extends javax.swing.JFrame {
         cmb_estatus = new javax.swing.JComboBox<>();
         jButton_Actualizar = new javax.swing.JButton();
         JButton_RestaurarPassword = new javax.swing.JButton();
+        JButton_EliminarUsuario = new javax.swing.JButton();
         JLabel_Wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -185,7 +188,7 @@ public class InformacionUsuario extends javax.swing.JFrame {
                 jButton_ActualizarActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton_Actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 270, 240, 40));
+        getContentPane().add(jButton_Actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 260, 240, 40));
 
         JButton_RestaurarPassword.setBackground(new java.awt.Color(185, 234, 252));
         JButton_RestaurarPassword.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -196,7 +199,18 @@ public class InformacionUsuario extends javax.swing.JFrame {
                 JButton_RestaurarPasswordActionPerformed(evt);
             }
         });
-        getContentPane().add(JButton_RestaurarPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 350, 240, 40));
+        getContentPane().add(JButton_RestaurarPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 310, 240, 40));
+
+        JButton_EliminarUsuario.setBackground(new java.awt.Color(185, 234, 252));
+        JButton_EliminarUsuario.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        JButton_EliminarUsuario.setForeground(new java.awt.Color(0, 0, 0));
+        JButton_EliminarUsuario.setText("Eliminar Usuario");
+        JButton_EliminarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Jbutton_EliminarUsuario(evt);
+            }
+        });
+        getContentPane().add(JButton_EliminarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 360, 240, 40));
         getContentPane().add(JLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 450));
 
         pack();
@@ -211,22 +225,20 @@ public class InformacionUsuario extends javax.swing.JFrame {
         try {
 
             Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement("update usuarios set nombre_usuario = ?, email = ?, telefono = ?, username = ?, "
-                    + "tipo_nivel = ?, estatus = ? where id_usuario = '" + ID + "'");
+            PreparedStatement pst = cn.prepareStatement("UPDATE Users set username = ?, email = ?, telephonenumber = ?, "
+                    + "permissions = ? where id_user = '" + ID + "'");
 
             pst.setString(1, txt_nombre.getText().trim());
             pst.setString(2, txt_mail.getText().trim());
             pst.setString(3, txt_telefono.getText().trim());
-            pst.setString(4, txt_username.getText().trim());
-            pst.setString(5, (String) cmb_niveles.getSelectedItem());
-            pst.setString(6, (String) cmb_estatus.getSelectedItem());
+            pst.setString(4, (String) cmb_niveles.getSelectedItem());
 
             pst.executeUpdate();
 
             JOptionPane.showMessageDialog(null, "Datos actualizados con exito");
-            
+
             bandera3 = false;
-            
+
             this.dispose();
 
         } catch (Exception e) {
@@ -243,8 +255,30 @@ public class InformacionUsuario extends javax.swing.JFrame {
 
         Password puente0 = new Password();
         puente0.setVisible(true);
-
     }//GEN-LAST:event_JButton_RestaurarPasswordActionPerformed
+
+    private void Jbutton_EliminarUsuario(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Jbutton_EliminarUsuario
+        try {
+
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement("DELETE FROM Users WHERE "
+                    + "id_user = '"+ ID +"'");
+
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Usuario eliminado con exito");
+
+            bandera3 = false;
+
+            this.dispose();
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(null, "Hubo un error al eliminar el usuario");
+            System.err.println("Error al eliminar el usuario datos ");
+
+        }
+    }//GEN-LAST:event_Jbutton_EliminarUsuario
 
     /**
      * @param args the command line arguments
@@ -282,6 +316,7 @@ public class InformacionUsuario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton JButton_EliminarUsuario;
     private javax.swing.JButton JButton_RestaurarPassword;
     private javax.swing.JLabel JLabel_Titulo;
     private javax.swing.JLabel JLabel_Wallpaper;

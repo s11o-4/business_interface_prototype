@@ -32,7 +32,7 @@ public class GestionarUsuarios extends javax.swing.JFrame {
     public GestionarUsuarios() {
         
         initComponents();
-        user = Login.user;
+        user = Login.email;
 
         setSize(630, 330);
         setTitle("Usuarios registrados - Sesion de " + user);
@@ -46,7 +46,10 @@ public class GestionarUsuarios extends javax.swing.JFrame {
         //netbeans guarda tus imagenes dentro de una carpeta src
         ImageIcon wallpaper = new ImageIcon("src/images/Wallpaper2.png");
         //La clase Icon te permite acomodar o ajustar la imagen en la interfaz.
-        Icon icono = new ImageIcon(wallpaper.getImage().getScaledInstance(JLabel_Wallpaper.getWidth(), JLabel_Wallpaper.getHeight(), Image.SCALE_DEFAULT));
+        Icon icono = new ImageIcon(wallpaper.getImage().getScaledInstance(
+                JLabel_Wallpaper.getWidth(), 
+                JLabel_Wallpaper.getHeight(), 
+                Image.SCALE_DEFAULT));
 
         JLabel_Wallpaper.setIcon(icono);
 
@@ -55,31 +58,28 @@ public class GestionarUsuarios extends javax.swing.JFrame {
         this.repaint();
 
         try {
-            
-            
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                    "select id_usuario, nombre_usuario, username, tipo_nivel, estatus from usuarios ");
+                    "select id_user, email, username, permissions, telephonenumber from Users");
 
             ResultSet rs = pst.executeQuery();
              
             
-            //Inicialixo mi tabla e indico que va a ser un nuevo objeto
+            //Inicializo mi tabla e indico que va a ser un nuevo objeto
             //de mi tabla table
             
             JTable_usuarios = new JTable(model);
-           
-          
            
             
             //Metodo para que dentro de mi jscrollpane este mi tabla usuarios
             
            jScrollPane1.setViewportView(JTable_usuarios);
-
-            model.addColumn(" ID ");
-            model.addColumn("Nombre");
-            model.addColumn("Username");
-            model.addColumn("EStatus");
+              
+            model.addColumn("ID");
+            model.addColumn(" Gmail ");
+            model.addColumn(" Username");
+            model.addColumn(" Permisos");
+            model.addColumn(" Numero de telefono");
 
             while (rs.next()) {
                 //Es un vector de tipo object
@@ -88,12 +88,10 @@ public class GestionarUsuarios extends javax.swing.JFrame {
 
                 for (int i = 0; i < 5; i++) {
                     fila[i] = rs.getObject(i + 1);
-
                 }
                 
                 //Metodo para agreafar una fila, ya que mi objeto de tipo object
                 //es solo un vector
-                
                 model.addRow(fila);
 
             }
@@ -125,7 +123,7 @@ public class GestionarUsuarios extends javax.swing.JFrame {
                     //object
                     //NO es necesiario utiliza rl pareso ya que es un objeto que es fijo
                     
-                    user_update = (String)model.getValueAt(fila_point, columna_point);
+                    user_update = (String)model.getValueAt(fila_point, columna_point + 1);
                     ID_USER = (int)model.getValueAt(fila_point, columna_id);
                     dispose();
                     InformacionUsuario informacion_usuario = new InformacionUsuario();

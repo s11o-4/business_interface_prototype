@@ -30,7 +30,7 @@ public class Contador extends javax.swing.JFrame {
      */
     public Contador() {
         
-        String user = Login.user;
+        String user = Login.email;
         
         
         initComponents();

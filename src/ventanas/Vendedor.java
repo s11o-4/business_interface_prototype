@@ -36,7 +36,7 @@ public class Vendedor extends javax.swing.JFrame {
         
         initComponents();
         
-        String user = Login.user;
+        String user = Login.email;
         
         JLabel_titulo.setText("Bienvenido " + user);
         

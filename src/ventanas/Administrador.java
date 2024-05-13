@@ -10,7 +10,7 @@ import javax.swing.WindowConstants;
 //implementar y que clase!!!!!!!!
 import com.itextpdf.text.Document;
 
-//EN este caso importe un subpaquete por eso coloque el pdf
+//En este caso importe un subpaquete por eso coloque el pdf
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -27,18 +27,17 @@ import javax.swing.JOptionPane;
  */
 public class Administrador extends javax.swing.JFrame {
     
-    String user, nombre_usuario;
+    String email, nombre_usuario;
     public static int sesion_usuario;
-
     
     public Administrador() {
         initComponents();
-        user = Login.user;
+        email = Login.email;
         sesion_usuario = 1;
         
         setSize(650,430);
         setResizable(false);
-        setTitle("Administrador - Sesion de " + user);
+        setTitle("Administrador - Sesion de " + email);
         
         setTitle("Administrador");
         setLocationRelativeTo(null);
@@ -47,7 +46,7 @@ public class Administrador extends javax.swing.JFrame {
         //Cuando tu cierres la interfaz esta se va a seguir ejecutando y por eso es que 
         //lo cierras
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-       
+        
         //Fondo de la interfaz //
         //netbeans guarda tus imagenes dentro de una carpeta src
         ImageIcon wallpaper = new ImageIcon("src/images/Wallpaper2.png");
@@ -61,29 +60,21 @@ public class Administrador extends javax.swing.JFrame {
         this.repaint();
         
         try{
-            
             Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement(
-            "select nombre_usuario from usuarios where username = '" + user + "'");
+            PreparedStatement pst = cn.prepareStatement("select username from Users where email = '" + email + "'");
             
             ResultSet rs = pst.executeQuery();
             
             if(rs.next()){
-               nombre_usuario = rs.getString("nombre_usuario");
+               nombre_usuario = rs.getString("username");
                JLabel_NombreUsuario.setText("Bienvenido " + nombre_usuario);
-                
-                
+               
             }
         }catch(Exception e){
-            
             System.err.println("Error en la conexion desde la ventana administrador");
             
-            
         }
-        
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -124,7 +115,7 @@ public class Administrador extends javax.swing.JFrame {
 
         JLabel_NombreUsuario.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         JLabel_NombreUsuario.setForeground(new java.awt.Color(255, 255, 255));
-        JLabel_NombreUsuario.setText("JLABEL");
+        JLabel_NombreUsuario.setText("Bienvenido");
         getContentPane().add(JLabel_NombreUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 310, 30));
 
         JButton_GestionarUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/AdministrarUsers.png"))); // NOI18N
@@ -213,7 +204,7 @@ public class Administrador extends javax.swing.JFrame {
 
     private void JButtonRegistrarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JButtonRegistrarUsuarioActionPerformed
        
-          RegistrarUsuarios registrarusuarios = new RegistrarUsuarios();
+        RegistrarUsuarios registrarusuarios = new RegistrarUsuarios();
         registrarusuarios.setVisible(true);
     }//GEN-LAST:event_JButtonRegistrarUsuarioActionPerformed
 

@@ -21,7 +21,7 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
      */
     public RegistrarUsuarios() {
         initComponents();
-        user = Login.user;
+        user = Login.email;
         
         setTitle("Registrar Nuevo Usuario - Sesion de " + user);
         
@@ -40,7 +40,9 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
         //netbeans guarda tus imagenes dentro de una carpeta src
         ImageIcon wallpaper = new ImageIcon("src/images/Wallpaper2.png");
         //La clase Icon te permite acomodar o ajustar la imagen en la interfaz.
-        Icon icono = new ImageIcon(wallpaper.getImage().getScaledInstance(jLabel_Wallpeper.getWidth(),  jLabel_Wallpeper.getHeight(), Image.SCALE_DEFAULT));
+        Icon icono = new ImageIcon(wallpaper.getImage().getScaledInstance(
+                jLabel_Wallpeper.getWidth(), 
+                jLabel_Wallpeper.getHeight(), Image.SCALE_DEFAULT));
            
         jLabel_Wallpeper.setIcon(icono);
 
@@ -151,6 +153,11 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
         txt_username.setForeground(new java.awt.Color(19, 99, 252));
         txt_username.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_username.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txt_username.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_usernameActionPerformed(evt);
+            }
+        });
         getContentPane().add(txt_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, 210, -1));
 
         txt_password.setBackground(new java.awt.Color(185, 234, 252));
@@ -211,10 +218,8 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_mailActionPerformed
 
     private void RegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarActionPerformed
-
        
         //validacion es la variable bandera
-       
         int permisos_cmb, validacion = 0;
         String nombre, mail, telefono, username, pass, pass2, permisos_string = null;
         
@@ -263,13 +268,13 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
         
         if(permisos_cmb == 1){
             
-            permisos_string = "Administrador";
+            permisos_string = "admin";
             
         } else if(permisos_cmb == 2){
-            permisos_string = "Contaduria";
+            permisos_string = "admin";
             
         } else if(permisos_cmb == 3){
-            permisos_string = "Vendedor";
+            permisos_string = "admin";
             
         }
         
@@ -278,7 +283,7 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
             PreparedStatement pst = cn.prepareStatement(
                     //Se colocan comillas simples uando deseas comparar
                     //datos de una variable externa
-                "select username from usuarios where username = '" + username + "'");
+                "select username from Users where username = '" + username + "'");
             
             ResultSet rs = pst.executeQuery();
             
@@ -307,16 +312,14 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
                     try{
                         Connection cn2 = Conexion.conectar();
                         PreparedStatement pst2 = cn2.prepareStatement(
-                            "insert into usuarios values (?,?,?,?,?,?,?,?)");
+                            "insert into Users values (?,?,?,?,?,?)");
                         
-                        pst2.setInt(1, 0);
-                        pst2.setString(2, nombre);
-                        pst2.setString(3, mail);
-                        pst2.setString(4, telefono);
-                        pst2.setString(5, username);
-                        pst2.setString(6, pass);
-                        pst2.setString(7, permisos_string);
-                        pst2.setString(8, "Activo");
+                        pst2.setString(1, mail);
+                        pst2.setString(2, pass);
+                        pst2.setString(3, permisos_string);
+                        pst2.setString(4, username);
+                        pst2.setString(5, telefono);
+                        pst2.setInt(6, 1);
                         
                         pst2.executeUpdate();
                         cn2.close();
@@ -337,7 +340,7 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
                         
                         
                     }catch(SQLException e){
-                        System.err.println("Error en registrar ususario");
+                        System.err.println("Error en registrar usuario");
                         JOptionPane.showMessageDialog(null, "Error al registrar, comuniquese con el administrador");
                     }
                 
@@ -369,6 +372,10 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
     private void txt_nombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_nombreActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_nombreActionPerformed
+
+    private void txt_usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_usernameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_usernameActionPerformed
 
     /**
      * @param args the command line arguments

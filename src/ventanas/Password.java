@@ -27,15 +27,16 @@ public class Password extends javax.swing.JFrame {
         setSize(439, 300);
         
         ImageIcon wallpaper = new ImageIcon("src/images/Wallpapaper2.png");
-        Icon back = new ImageIcon(wallpaper.getImage().getScaledInstance(fondo.getWidth(), fondo.getHeight(), Image.SCALE_DEFAULT));
+        Icon back = new ImageIcon(wallpaper.getImage().getScaledInstance(
+                fondo.getWidth(), 
+                fondo.getHeight(), 
+                Image.SCALE_DEFAULT));
        
         fondo.setIcon(back);
         
         this.repaint();
         
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-  
-    
     }
 
     /**
@@ -101,7 +102,7 @@ public class Password extends javax.swing.JFrame {
               
               try{
               Connection cn = Conexion.conectar();
-              PreparedStatement pst = cn.prepareStatement("update usuarios set password = '" + pass1 + "'");
+              PreparedStatement pst = cn.prepareStatement("update Users set password = '" + pass1 + "'");
               
               pst.executeUpdate();
               
